@@ -19,7 +19,7 @@ public class TrimRepository {
         em.persist(trim);
     }
 
-    public Trim findTrim(Long id) {
+    public Trim findOne(Long id) {
         return em.find(Trim.class, id);
     }
 

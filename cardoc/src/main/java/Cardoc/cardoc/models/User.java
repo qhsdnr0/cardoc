@@ -23,7 +23,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user")
-    private List<Trim> trims = new ArrayList<>();
+    private List<UserTrim> userTrims = new ArrayList<>();
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

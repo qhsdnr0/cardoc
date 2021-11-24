@@ -19,9 +19,8 @@ public class Trim {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @OneToMany(mappedBy = "trim")
+    private List<UserTrim> userTrims = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id")
@@ -32,4 +31,5 @@ public class Trim {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
 }

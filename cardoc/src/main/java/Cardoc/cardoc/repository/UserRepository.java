@@ -2,6 +2,7 @@ package Cardoc.cardoc.repository;
 
 import Cardoc.cardoc.models.Trim;
 import Cardoc.cardoc.models.User;
+import Cardoc.cardoc.models.UserTrim;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,14 +23,10 @@ public class UserRepository {
         em.persist(user);
     }
 
+    public void saveUserTrim(UserTrim userTrim) { em.persist(userTrim);}
+
     public void removeUser(User user) {
         em.remove(user);
-    }
-
-    public void saveTrim(String account, Long trimId) {
-        User findUser = findByAccount(account).get(0);
-        Trim findTrim = em.find(Trim.class, trimId);
-        findUser.getTrims().add(findTrim);
     }
 
     public User findOne(Long id) {

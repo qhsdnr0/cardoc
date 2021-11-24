@@ -1,9 +1,11 @@
 package Cardoc.cardoc.controller;
 
+import Cardoc.cardoc.models.Trim;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Getter @Setter
 public class UserForm {
@@ -13,4 +15,6 @@ public class UserForm {
 
     @NotEmpty(message = "PASSWORD_CANNOT_BE_NULL")
     private String password;
+
+    private Long trimId;
 }

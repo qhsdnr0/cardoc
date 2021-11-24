@@ -8,18 +8,17 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tires")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tire_type")
 @Getter @Setter
-public abstract class Tire {
+public class Tire {
 
     @Id @GeneratedValue
     @Column(name = "tire_id")
     private Long id;
 
-    private int flat;
-    private int width;
-    private int wheelSize;
+    private String name;
+
+    @Embedded
+    private TireInfo tireInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trim_id")
