@@ -1,5 +1,6 @@
 package Cardoc.cardoc.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +24,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private List<UserTrim> userTrims = new ArrayList<>();
 
     private LocalDateTime createdAt;

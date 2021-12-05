@@ -1,5 +1,8 @@
 package Cardoc.cardoc.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tires")
+
 @Getter @Setter
 public class Tire {
 
@@ -21,7 +25,9 @@ public class Tire {
     private TireInfo tireInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonManagedReference
     @JoinColumn(name = "trim_id")
+    @JsonIgnore
     private Trim trim;
 
     private LocalDateTime createdAt;

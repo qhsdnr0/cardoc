@@ -27,6 +27,7 @@ public class UserController {
     private final UserRepository userRepository;
     private final TrimRepository trimRepository;
     private final TrimService trimService;
+    private final Token accessToken;
 
     @PostMapping("/signup")
     public HashMap<String, String> newUser(@RequestBody UserForm userForm) {
@@ -51,7 +52,7 @@ public class UserController {
 
         if (!findUser.isEmpty() && BCrypt.checkpw(userForm.getPassword(), findUser.get(0).getPassword())) {
             result.put("message", "SUCCESS");
-            result.put("accessToken", Token.makeJwtToken(findUser.get(0)));
+            result.put("accessToken", accessToken.makeJwtToken(findUser.get(0)));
         }
 
         return result;
@@ -59,8 +60,7 @@ public class UserController {
 
     @PostMapping("/trims")
     public void saveTrim(@RequestHeader("Authorization") String token, @RequestBody UserForm userForm) {
-        User user = userRepository.findOne(Token.decodeJwtToken(token));
-        System.out.println("-------------------------------" +user.getAccount());
+        User user = userRepository.findOne(accessToken.decodeJwtToken(token));
         Trim trim =  trimService.findTrim(userForm.getTrimId());
         if (userForm.getAccount().equals(user.getAccount())) {
             UserTrim userTrim = new UserTrim();

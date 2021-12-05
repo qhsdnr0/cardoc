@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class CarController {
 
     private final CarService carService;
-    private final CarRepository carRepository;
 
     @PostMapping("")
     public void createCar(@RequestBody CarForm carForm) {

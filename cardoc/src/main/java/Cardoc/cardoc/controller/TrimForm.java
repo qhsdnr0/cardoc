@@ -12,4 +12,5 @@ public class TrimForm {
     private String name;
 
     private Long carId;
+    
 }

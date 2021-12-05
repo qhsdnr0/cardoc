@@ -33,6 +33,11 @@ public class UserRepository {
         return em.find(User.class, id);
     }
 
+    public List<UserTrim> findUserTrim(User user) {
+        return em.createQuery("select u from UserTrim u where u.user= :user", UserTrim.class)
+                .setParameter("user", user)
+                .getResultList();
+    }
     public List<User> findByAccount(String account) {
         return em.createQuery("select u from User u where u.account= :account", User.class)
                 .setParameter("account", account)

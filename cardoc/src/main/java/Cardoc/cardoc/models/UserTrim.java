@@ -1,5 +1,7 @@
 package Cardoc.cardoc.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,11 +19,13 @@ public class UserTrim {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonManagedReference
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trim_id")
+    @JsonManagedReference
     private Trim trim;
 
     public static UserTrim addUserTrim(User user, Trim trim) {
