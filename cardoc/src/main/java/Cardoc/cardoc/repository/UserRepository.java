@@ -38,9 +38,11 @@ public class UserRepository {
                 .setParameter("user", user)
                 .getResultList();
     }
-    public List<User> findByAccount(String account) {
-        return em.createQuery("select u from User u where u.account= :account", User.class)
+    public User findByAccount(String account) {
+        List<User> userList = em.createQuery("select u from User u where u.account= :account", User.class)
                 .setParameter("account", account)
                 .getResultList();
+
+        return userList.isEmpty() ? null : userList.get(0);
     }
 }

@@ -20,4 +20,8 @@ public class CarService {
         car.setUpdatedAt(LocalDateTime.now());
         carRepository.save(car);
     }
+
+    public Car getCar(Long id) {
+        return carRepository.findOne(id);
+    }
 }

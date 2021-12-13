@@ -2,20 +2,19 @@ package Cardoc.cardoc.controller;
 
 import Cardoc.cardoc.models.Trim;
 import Cardoc.cardoc.models.User;
-import Cardoc.cardoc.models.UserTrim;
-import Cardoc.cardoc.repository.TrimRepository;
-import Cardoc.cardoc.repository.UserRepository;
 import Cardoc.cardoc.service.TrimService;
 import Cardoc.cardoc.service.UserService;
+import Cardoc.cardoc.util.Encryption;
 import lombok.RequiredArgsConstructor;
-import Cardoc.cardoc.token.Token;
+import Cardoc.cardoc.util.Token;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,49 +23,37 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
-    private final TrimRepository trimRepository;
     private final TrimService trimService;
-    private final Token accessToken;
+
+    @GetMapping("/asdf")
+    public ResponseEntity hello() {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED");
+    }
 
     @PostMapping("/signup")
-    public HashMap<String, String> newUser(@RequestBody UserForm userForm) {
-        User user = new User();
-        HashMap<String, String> result = new HashMap<>();
-        userService.validateUserPassword(userForm.getPassword());
-        String hashedPassword = BCrypt.hashpw(userForm.getPassword(), BCrypt.gensalt());
+    public ResponseEntity<Object> newUser(@RequestBody UserForm userForm) {
+        userService.createUser(userForm);
 
-        user.setAccount(userForm.getAccount());
-        user.setPassword(hashedPassword);
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
-        userService.createUser(user);
-        result.put("message", "CREATED");
-        return result;
+        return ResponseEntity.ok("CREATED");
     }
 
     @PostMapping("/signin")
-    public HashMap<String, String> logIn(@RequestBody UserForm userForm) {
-        HashMap<String, String> result = new HashMap<>();
-        List<User> findUser = userRepository.findByAccount(userForm.getAccount());
+    public ResponseEntity<Object> logIn(@RequestBody UserForm userForm) {
+        User findUser = userService.getUser(userForm.getAccount());
 
-        if (!findUser.isEmpty() && BCrypt.checkpw(userForm.getPassword(), findUser.get(0).getPassword())) {
-            result.put("message", "SUCCESS");
-            result.put("accessToken", accessToken.makeJwtToken(findUser.get(0)));
+        if (findUser != null && BCrypt.checkpw(userForm.getPassword(), findUser.getPassword())) {
+            return ResponseEntity.ok(Token.makeJwtToken(findUser));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("INVALID_PASSWORD");
         }
-
-        return result;
     }
 
     @PostMapping("/trims")
     public void saveTrim(@RequestHeader("Authorization") String token, @RequestBody UserForm userForm) {
-        User user = userRepository.findOne(accessToken.decodeJwtToken(token));
+        User user = userService.getUser(Token.decodeJwtToken(token));
         Trim trim =  trimService.findTrim(userForm.getTrimId());
         if (userForm.getAccount().equals(user.getAccount())) {
-            UserTrim userTrim = new UserTrim();
-            userTrim.setTrim(trim);
-            userTrim.setUser(user);
-            userService.createUserTrim(userTrim);
+            userService.addTrim(user.getId(), trim.getId());
         }
     }
 }
