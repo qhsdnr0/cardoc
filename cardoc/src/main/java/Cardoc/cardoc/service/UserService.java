@@ -1,6 +1,7 @@
 package Cardoc.cardoc.service;
 
 import Cardoc.cardoc.controller.UserForm;
+import Cardoc.cardoc.exception.BadRequestException;
 import Cardoc.cardoc.models.Trim;
 import Cardoc.cardoc.models.User;
 import Cardoc.cardoc.repository.TrimRepository;
@@ -22,16 +23,20 @@ import java.time.LocalDateTime;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final TrimRepository trimRepository;
 
     public void createUser(UserForm userForm) {
         User user = new User();
+        if (userRepository.findByAccount(userForm.getAccount()) != null) {
+            throw new BadRequestException("DUPLICATED_ACCOUNT");
+        }
+
         Validation.validateUserAccount(userForm.getAccount());
         Validation.validateUserPassword(userForm.getPassword());
+
         String hashedPassword = Encryption.getHashedPassword(userForm.getPassword());
+        user.setPassword(hashedPassword);
 
         user.setAccount(userForm.getAccount());
-        user.setPassword(hashedPassword);
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
         userRepository.saveUser(user);
@@ -48,6 +53,7 @@ public class UserService {
             }
         } catch (AccessDeniedException ex) {
             ex.printStackTrace();
+            throw new BadRequestException("INVALID_PASSWORD");
         }
         return result;
     }

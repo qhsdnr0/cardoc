@@ -1,8 +1,11 @@
 package Cardoc.cardoc.repository;
 
+import Cardoc.cardoc.exception.BadRequestException;
 import Cardoc.cardoc.models.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

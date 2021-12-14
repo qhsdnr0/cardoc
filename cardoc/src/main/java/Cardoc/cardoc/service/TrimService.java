@@ -2,6 +2,7 @@ package Cardoc.cardoc.service;
 
 import Cardoc.cardoc.controller.TrimForm;
 import Cardoc.cardoc.controller.TrimTireForm;
+import Cardoc.cardoc.exception.BadRequestException;
 import Cardoc.cardoc.models.*;
 import Cardoc.cardoc.repository.TireRepository;
 import Cardoc.cardoc.repository.TrimRepository;
@@ -32,6 +33,10 @@ public class TrimService {
     }
 
     public Trim findTrim(Long id) {
+
+        if (trimRepository.findOne(id) == null) {
+            throw new BadRequestException("TRIM_DOES_NOT_EXIST");
+        }
         return trimRepository.findOne(id);
     }
 
