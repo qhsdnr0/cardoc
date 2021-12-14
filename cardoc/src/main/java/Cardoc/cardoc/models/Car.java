@@ -17,7 +17,6 @@ import java.util.List;
 public class Car {
 
     @Id @GeneratedValue
-    @Column(name = "car_id")
     private Long id;
 
     private String name;

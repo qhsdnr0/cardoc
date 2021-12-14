@@ -44,8 +44,8 @@ public class TireRepository {
                 .getResultList();
     }
 
-    public List<Tire> findByUser(User user) {
-        return em.createQuery("select t from Tire t inner join UserTrim u on u.trim=t.trim and u.user= :user", Tire.class)
+    public List<Object> findByUser(User user) {
+        return em.createQuery("select r.tires from Trim r join UserTrim u on u.trim=r and u.user= :user")
                 .setParameter("user", user)
                 .getResultList();
 

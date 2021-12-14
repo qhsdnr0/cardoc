@@ -18,7 +18,6 @@ import java.util.List;
 public class Trim {
 
     @Id @GeneratedValue
-    @Column(name = "trim_id")
     private Long id;
 
     private String name;
@@ -34,15 +33,10 @@ public class Trim {
 
     @OneToMany(mappedBy = "trim")
     @JsonBackReference
-    private List<Tire> tires = new ArrayList<>();
+    private List<TrimTire> trimTires = new ArrayList<>();
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-    public void addTire(Tire tire) {
-        tire.setTrim(this);
-        this.getTires().add(tire);
-    }
 
     public void addCar(Car car) {
         car.getTrims().add(this);

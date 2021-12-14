@@ -1,5 +1,6 @@
 package Cardoc.cardoc.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -8,6 +9,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tires")
@@ -16,7 +19,6 @@ import java.time.LocalDateTime;
 public class Tire {
 
     @Id @GeneratedValue
-    @Column(name = "tire_id")
     private Long id;
 
     private String name;
@@ -24,12 +26,12 @@ public class Tire {
     @Embedded
     private TireInfo tireInfo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonManagedReference
-    @JoinColumn(name = "trim_id")
-    @JsonIgnore
-    private Trim trim;
+    @OneToMany(mappedBy = "tire")
+    @JsonBackReference
+    private List<TrimTire> trimTires = new ArrayList<>();
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+
 }

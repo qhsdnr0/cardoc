@@ -7,6 +7,7 @@ import Cardoc.cardoc.service.UserService;
 import Cardoc.cardoc.util.Token;
 import Cardoc.cardoc.util.Validation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,27 +27,16 @@ public class TireController {
     private final UserService userService;
 
     @PostMapping("")
-    public void createTire(@RequestBody TireForm tireForm) {
-        Tire tire = new Tire();
-        TireInfo tireInfo = Validation.makeTireInfo(tireForm.getTireInfo());
-
-        tire.setTireInfo(tireInfo);
-        tire.setCreatedAt(LocalDateTime.now());
-        tire.setUpdatedAt(LocalDateTime.now());
-        tire.setName(tireForm.getName());
-        tire.setTrim(trimService.findTrim(tireForm.getTrimId()));
-        tireService.createTire(tire);
+    public ResponseEntity<Object> createTire(@RequestBody TireForm tireForm) {
+        tireService.createTire(tireForm);
+        return ResponseEntity.ok("CREATED");
     }
 
     @GetMapping("")
-    public HashMap<String, Object> getTire(@RequestHeader("Authorization") String token) {
-        HashMap<String, Object> result = new HashMap<>();
-
+    public ResponseEntity<Object> getTire(@RequestHeader("Authorization") String token) {
         User user = userService.getUser(Token.decodeJwtToken(token));
-        List<Tire> tires = tireService.getTireByUser(user);
+        List<Object> tires = tireService.getTireByUser(user);
 
-        result.put("result", tires);
-
-        return result;
+        return ResponseEntity.ok(tires);
     }
 }

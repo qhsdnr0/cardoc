@@ -10,12 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users_trims")
+@Table(name = "user_trims")
 @Getter @Setter
 public class UserTrim {
 
     @Id @GeneratedValue
-    @Column(name = "user_trim_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
