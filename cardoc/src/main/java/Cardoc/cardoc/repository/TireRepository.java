@@ -1,6 +1,7 @@
 package Cardoc.cardoc.repository;
 
 import Cardoc.cardoc.models.Tire;
+import Cardoc.cardoc.models.Trim;
 import Cardoc.cardoc.models.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -47,6 +48,13 @@ public class TireRepository {
                         "and u.user= :user group by u.tire having t=u.tire order by t.id")
                 .setParameter("user", user)
                 .getResultList();
+    }
 
+    public List<Object> findByTrim(User user, Trim trim) {
+        return em.createQuery("select t, sum(u.quantity) from Tire t join UserTrimTire u on t=u.tire " +
+                        "and u.user= :user and u.trim= :trim group by u.tire having t=u.tire order by t.id")
+                .setParameter("user", user)
+                .setParameter("trim", trim)
+                .getResultList();
     }
 }

@@ -30,13 +30,4 @@ public class CarRepository {
                 .setParameter("name", name)
                 .getSingleResult();
     }
-
-    public List<Long> savedTrims(Car car) {
-        List<Long> trimIdList = new ArrayList<>();
-        List<Trim> trims = car.getTrims();
-        for (Trim trim : trims) {
-            trimIdList.add(trim.getId());
-        }
-        return trimIdList;
-    }
 }

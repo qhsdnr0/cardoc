@@ -18,7 +18,6 @@ import java.util.List;
 public class TireService {
 
     private final TireRepository tireRepository;
-    private final TrimService trimService;
 
     public void createTire(TireForm tireForm) {
         Tire tire = new Tire();
@@ -39,4 +38,7 @@ public class TireService {
         return tireRepository.findByUser(user);
     }
 
+    public List<Object> getTireByTrim(User user, Trim trim) {
+        return tireRepository.findByTrim(user, trim);
+    }
 }

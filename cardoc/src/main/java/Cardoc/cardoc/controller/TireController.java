@@ -39,4 +39,13 @@ public class TireController {
 
         return ResponseEntity.ok(tires);
     }
+
+    @GetMapping("{trimId}")
+    public ResponseEntity<Object> getTire(@RequestHeader("Authorization") String token, @PathVariable(value = "trimId") Long trimId) {
+        User user = userService.getUser(Token.decodeJwtToken(token));
+        Trim trim = trimService.findTrim(trimId);
+        List<Object> tires = tireService.getTireByTrim(user, trim);
+
+        return ResponseEntity.ok(tires);
+    }
 }

@@ -1,8 +1,9 @@
 package Cardoc.cardoc.controller;
 
 import lombok.Getter;
+import lombok.Setter;
 
-@Getter
+@Getter @Setter
 public class TrimTireForm {
 
     private int quantity;

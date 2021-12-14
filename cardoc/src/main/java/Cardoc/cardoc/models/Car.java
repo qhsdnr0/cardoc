@@ -27,9 +27,4 @@ public class Car {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-    public void addTrim(Trim trim) {
-        this.getTrims().add(trim);
-        trim.setCar(this);
-    }
 }
