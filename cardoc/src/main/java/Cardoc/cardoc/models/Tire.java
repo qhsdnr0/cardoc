@@ -28,7 +28,7 @@ public class Tire {
 
     @OneToMany(mappedBy = "tire")
     @JsonBackReference
-    private List<TrimTire> trimTires = new ArrayList<>();
+    private List<UserTrimTire> userTrimTires = new ArrayList<>();
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

@@ -22,10 +22,6 @@ public class Trim {
 
     private String name;
 
-    @OneToMany(mappedBy = "trim")
-    @JsonBackReference
-    private List<UserTrim> userTrims = new ArrayList<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id")
     @JsonManagedReference
@@ -33,7 +29,7 @@ public class Trim {
 
     @OneToMany(mappedBy = "trim")
     @JsonBackReference
-    private List<TrimTire> trimTires = new ArrayList<>();
+    private List<UserTrimTire> userTrimTires = new ArrayList<>();
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

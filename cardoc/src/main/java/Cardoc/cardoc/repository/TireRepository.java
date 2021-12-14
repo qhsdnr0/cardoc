@@ -2,13 +2,11 @@ package Cardoc.cardoc.repository;
 
 import Cardoc.cardoc.models.Tire;
 import Cardoc.cardoc.models.User;
-import Cardoc.cardoc.models.UserTrim;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -45,7 +43,8 @@ public class TireRepository {
     }
 
     public List<Object> findByUser(User user) {
-        return em.createQuery("select r.tires from Trim r join UserTrim u on u.trim=r and u.user= :user")
+        return em.createQuery("select t, sum(u.quantity) from Tire t join UserTrimTire u on t=u.tire " +
+                        "and u.user= :user group by u.tire having t=u.tire order by t.id")
                 .setParameter("user", user)
                 .getResultList();
 

@@ -1,15 +1,11 @@
 package Cardoc.cardoc.repository;
 
-import Cardoc.cardoc.models.Trim;
 import Cardoc.cardoc.models.User;
-import Cardoc.cardoc.models.UserTrim;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
@@ -23,8 +19,6 @@ public class UserRepository {
         em.persist(user);
     }
 
-    public void saveUserTrim(UserTrim userTrim) { em.persist(userTrim);}
-
     public void removeUser(User user) {
         em.remove(user);
     }
@@ -33,11 +27,6 @@ public class UserRepository {
         return em.find(User.class, id);
     }
 
-    public List<UserTrim> findUserTrim(User user) {
-        return em.createQuery("select u from UserTrim u where u.user= :user", UserTrim.class)
-                .setParameter("user", user)
-                .getResultList();
-    }
     public User findByAccount(String account) {
         List<User> userList = em.createQuery("select u from User u where u.account= :account", User.class)
                 .setParameter("account", account)

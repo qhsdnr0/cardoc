@@ -3,7 +3,6 @@ package Cardoc.cardoc.service;
 import Cardoc.cardoc.controller.UserForm;
 import Cardoc.cardoc.models.Trim;
 import Cardoc.cardoc.models.User;
-import Cardoc.cardoc.models.UserTrim;
 import Cardoc.cardoc.repository.TrimRepository;
 import Cardoc.cardoc.repository.UserRepository;
 import Cardoc.cardoc.util.Encryption;
@@ -11,14 +10,11 @@ import Cardoc.cardoc.util.Token;
 import Cardoc.cardoc.util.Validation;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
-import java.util.regex.Pattern;
 
 @Service
 @Transactional
@@ -86,18 +82,4 @@ public class UserService {
     public void deleteUser(User user) {
         userRepository.removeUser(user);
     }
-
-    public void addTrim(Long userId, Long trimId) {
-        User findUser = userRepository.findOne(userId);
-        Trim findTrim = trimRepository.findOne(trimId);
-        UserTrim userTrim = new UserTrim();
-        userTrim.addUserTrim(findUser, findTrim);
-        userRepository.saveUserTrim(userTrim);
-    }
-
-    public void createUserTrim(UserTrim userTrim) {
-        userRepository.saveUserTrim(userTrim);
-    }
-
-
 }

@@ -43,14 +43,4 @@ public class UserController {
             throw new BadRequestException("INVALID_PASSWORD");
         }
     }
-
-    @PostMapping("/trims")
-    public ResponseEntity<Object> saveTrim(@RequestHeader("Authorization") String token, @RequestBody UserForm userForm) {
-        User user = userService.getUser(Token.decodeJwtToken(token));
-        Trim trim =  trimService.findTrim(userForm.getTrimId());
-        if (userForm.getAccount().equals(user.getAccount())) {
-            userService.addTrim(user.getId(), trim.getId());
-        }
-        return ResponseEntity.ok("SUCCESS");
-    }
 }
