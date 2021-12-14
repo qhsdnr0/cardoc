@@ -24,7 +24,6 @@ public class TrimController {
     private final UserService userService;
     private final TrimService trimService;
     private final CarService carService;
-    private final Token accessToken;
 
     @PostMapping("")
     public void createTrim(@RequestBody TrimForm trimForm) {
@@ -39,7 +38,7 @@ public class TrimController {
     @GetMapping("/{trimId}")
     public HashMap<String, Object> getTrim(@RequestHeader("Authorization") String token, @PathVariable(value = "trimId") Long trimId) {
         HashMap<String, Object> result = new HashMap<>();
-        User user = userService.getUser(accessToken.decodeJwtToken(token));
+        User user = userService.getUser(Token.decodeJwtToken(token));
         Trim trim = trimService.findTrim(trimId);
         result.put("result", trim);
         return result;

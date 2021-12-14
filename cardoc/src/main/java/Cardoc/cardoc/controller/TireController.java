@@ -24,13 +24,11 @@ public class TireController {
     private final TireService tireService;
     private final TrimService trimService;
     private final UserService userService;
-    private final Token accessToken;
-    private final Validation validation;
 
     @PostMapping("")
     public void createTire(@RequestBody TireForm tireForm) {
         Tire tire = new Tire();
-        TireInfo tireInfo = validation.makeTireInfo(tireForm.getTireInfo());
+        TireInfo tireInfo = Validation.makeTireInfo(tireForm.getTireInfo());
 
         tire.setTireInfo(tireInfo);
         tire.setCreatedAt(LocalDateTime.now());
@@ -44,7 +42,7 @@ public class TireController {
     public HashMap<String, Object> getTire(@RequestHeader("Authorization") String token) {
         HashMap<String, Object> result = new HashMap<>();
 
-        User user = userService.getUser(accessToken.decodeJwtToken(token));
+        User user = userService.getUser(Token.decodeJwtToken(token));
         List<Tire> tires = tireService.getTireByUser(user);
 
         result.put("result", tires);

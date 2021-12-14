@@ -39,4 +39,8 @@ public class Trim {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    public void addTire(Tire tire) {
+        tire.setTrim(this);
+        this.getTires().add(tire);
+    }
 }

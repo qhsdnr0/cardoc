@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class TrimService {
 
     private final TrimRepository trimRepository;
-    private final UserRepository userRepository;
 
     public void createTrim(Trim trim) {
         trimRepository.save(trim);

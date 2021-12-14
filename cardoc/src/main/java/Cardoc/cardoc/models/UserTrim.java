@@ -28,11 +28,10 @@ public class UserTrim {
     @JsonManagedReference
     private Trim trim;
 
-    public static UserTrim addUserTrim(User user, Trim trim) {
-        UserTrim userTrim = new UserTrim();
-        userTrim.setUser(user);
-        userTrim.setTrim(trim);
-
-        return userTrim;
+    public void addUserTrim(User user, Trim trim) {
+        this.setUser(user);
+        this.setTrim(trim);
+        user.getUserTrims().add(this);
+        trim.getUserTrims().add(this);
     }
 }
