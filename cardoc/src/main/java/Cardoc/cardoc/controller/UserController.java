@@ -1,5 +1,6 @@
 package Cardoc.cardoc.controller;
 
+import Cardoc.cardoc.exception.BadRequestException;
 import Cardoc.cardoc.models.Trim;
 import Cardoc.cardoc.models.User;
 import Cardoc.cardoc.service.TrimService;
@@ -25,11 +26,6 @@ public class UserController {
     private final UserService userService;
     private final TrimService trimService;
 
-    @GetMapping("/asdf")
-    public ResponseEntity hello() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED");
-    }
-
     @PostMapping("/signup")
     public ResponseEntity<Object> newUser(@RequestBody UserForm userForm) {
         userService.createUser(userForm);
@@ -44,16 +40,17 @@ public class UserController {
         if (findUser != null && BCrypt.checkpw(userForm.getPassword(), findUser.getPassword())) {
             return ResponseEntity.ok(Token.makeJwtToken(findUser));
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("INVALID_PASSWORD");
+            throw new BadRequestException("INVALID_PASSWORD");
         }
     }
 
     @PostMapping("/trims")
-    public void saveTrim(@RequestHeader("Authorization") String token, @RequestBody UserForm userForm) {
+    public ResponseEntity<Object> saveTrim(@RequestHeader("Authorization") String token, @RequestBody UserForm userForm) {
         User user = userService.getUser(Token.decodeJwtToken(token));
         Trim trim =  trimService.findTrim(userForm.getTrimId());
         if (userForm.getAccount().equals(user.getAccount())) {
             userService.addTrim(user.getId(), trim.getId());
         }
+        return ResponseEntity.ok("SUCCESS");
     }
 }

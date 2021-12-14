@@ -67,6 +67,7 @@ public class UserService {
             ex.printStackTrace();
             throw new IllegalStateException("USER_DOES_NOT_EXIST");
         }
+
     }
 
     public User getUser(String account) {
@@ -90,8 +91,7 @@ public class UserService {
         User findUser = userRepository.findOne(userId);
         Trim findTrim = trimRepository.findOne(trimId);
         UserTrim userTrim = new UserTrim();
-        userTrim.setUser(findUser);
-        userTrim.setTrim(findTrim);
+        userTrim.addUserTrim(findUser, findTrim);
         userRepository.saveUserTrim(userTrim);
     }
 

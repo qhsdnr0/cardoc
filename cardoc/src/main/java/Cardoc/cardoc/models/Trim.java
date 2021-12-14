@@ -43,4 +43,9 @@ public class Trim {
         tire.setTrim(this);
         this.getTires().add(tire);
     }
+
+    public void addCar(Car car) {
+        car.getTrims().add(this);
+        this.setCar(car);
+    }
 }
