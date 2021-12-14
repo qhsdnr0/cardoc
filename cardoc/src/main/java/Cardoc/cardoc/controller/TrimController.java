@@ -1,5 +1,6 @@
 package Cardoc.cardoc.controller;
 
+import Cardoc.cardoc.exception.BadRequestException;
 import Cardoc.cardoc.models.Trim;
 import Cardoc.cardoc.models.User;
 import Cardoc.cardoc.service.CarService;
@@ -8,6 +9,7 @@ import Cardoc.cardoc.service.UserService;
 import Cardoc.cardoc.util.Token;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +18,7 @@ import java.util.HashMap;
 
 
 @RequiredArgsConstructor
-@RequestMapping("trim")
+@RequestMapping("trims")
 @Transactional
 @RestController
 public class TrimController {
@@ -26,21 +28,20 @@ public class TrimController {
     private final CarService carService;
 
     @PostMapping("")
-    public void createTrim(@RequestBody TrimForm trimForm) {
-        Trim trim = new Trim();
-        trim.setCreatedAt(LocalDateTime.now());
-        trim.setUpdatedAt(LocalDateTime.now());
-        trim.setCar(carService.getCar(trimForm.getCarId()));
-        trim.setName(trimForm.getName());
-        trimService.createTrim(trim);
+    public ResponseEntity<Object> createTrim(@RequestBody TrimForm trimForm) {
+        trimService.createTrim(trimForm);
+        return ResponseEntity.ok("CREATED");
     }
 
     @GetMapping("/{trimId}")
-    public HashMap<String, Object> getTrim(@RequestHeader("Authorization") String token, @PathVariable(value = "trimId") Long trimId) {
-        HashMap<String, Object> result = new HashMap<>();
-        User user = userService.getUser(Token.decodeJwtToken(token));
+    public ResponseEntity<Object> getTrim(@RequestHeader("Authorization") String token, @PathVariable(value = "trimId") Long trimId) {
+        userService.getUser(Token.decodeJwtToken(token));
         Trim trim = trimService.findTrim(trimId);
-        result.put("result", trim);
-        return result;
+        if (trim == null) {
+            throw new BadRequestException("TRIM_DOES_NOT_EXIST");
+        } else {
+            return ResponseEntity.ok(trim);
+        }
+
     }
 }
