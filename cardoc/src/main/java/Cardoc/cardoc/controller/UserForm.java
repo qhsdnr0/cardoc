@@ -1,6 +1,7 @@
 package Cardoc.cardoc.controller;
 
 import Cardoc.cardoc.models.Trim;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,4 @@ public class UserForm {
 
     @NotEmpty(message = "PASSWORD_CANNOT_BE_NULL")
     private String password;
-
-    private Long trimId;
 }
