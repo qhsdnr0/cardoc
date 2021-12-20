@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("users")
 @Transactional
+@CrossOrigin
 public class UserController {
 
     private final UserService userService;
