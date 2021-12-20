@@ -20,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("tires")
 @Transactional
+@CrossOrigin
 public class TireController {
 
     private final TireService tireService;

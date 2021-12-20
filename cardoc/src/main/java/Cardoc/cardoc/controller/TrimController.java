@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("trims")
 @Transactional
 @RestController
+@CrossOrigin
 public class TrimController {
 
     private final UserService userService;
